@@ -32,7 +32,7 @@
 
         .app-container {
             width: 100%;
-            max-width: 500px;
+            max-width: 520px;
             background: var(--card-bg);
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
@@ -40,7 +40,7 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
-            position: relative; /* needed for confetti positioning */
+            position: relative;
             overflow: visible;
         }
 
@@ -58,7 +58,6 @@
             gap: 8px;
         }
 
-        /* متحركة: أيقونة العنوان */
         .logo {
             display: inline-block;
             font-size: 1.6rem;
@@ -77,6 +76,42 @@
             color: #6b7280;
         }
 
+        /* قسم التعليمات والقواعد */
+        .instructions-card {
+            background: #fffbe0;
+            border: 1px solid #fde047;
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        .instructions-card h2 {
+            font-size: 1rem;
+            color: #b45309;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .instructions-card ul {
+            padding-right: 18px;
+            margin-bottom: 10px;
+        }
+
+        .instructions-card li {
+            margin-bottom: 4px;
+        }
+
+        .example-box {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 8px 12px;
+            border: 1px dashed #f59e0b;
+            font-size: 0.83rem;
+        }
+
         /* المجموعات المرجعية */
         .reference-board {
             display: grid;
@@ -85,6 +120,7 @@
             background: #eef2ff;
             padding: 12px;
             border-radius: 12px;
+            transition: opacity 0.3s;
         }
 
         .group-card {
@@ -175,8 +211,14 @@
             border-color: var(--primary);
         }
 
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
         .btn {
-            width: 100%;
+            flex: 2;
             padding: 12px;
             background: var(--primary);
             color: white;
@@ -185,7 +227,6 @@
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 10px;
             transition: 0.3s;
         }
 
@@ -193,10 +234,30 @@
             background: var(--primary-hover);
         }
 
+        .btn-secondary {
+            flex: 1;
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+
         .feedback {
             margin-top: 10px;
             font-weight: bold;
             min-height: 24px;
+        }
+
+        .hint-box {
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: #4b5563;
+            background: #f3f4f6;
+            padding: 6px;
+            border-radius: 6px;
+            display: none;
         }
 
         /* قسم أداة التشفير التفاعلية */
@@ -221,7 +282,7 @@
             font-size: 1.2rem;
         }
 
-        /* تأثير النجوم عند النجاح */
+        /* نجوم وكونفيتي */
         .stars {
             position: absolute;
             left: 50%;
@@ -241,7 +302,6 @@
             100% { transform: translateX(-50%) scale(1) opacity: 0; }
         }
 
-        /* كونفيتي */
         #confetti {
             position: absolute;
             inset: 0;
@@ -278,21 +338,34 @@
         <p>فك الشفرة، تعلم الحروف والكلمات الإنجليزية</p>
     </header>
 
-    <!-- مكان كونفيتي -->
-    <div id="confetti" aria-hidden="true"></div>
+    <!-- دليل القواعد والتعليمات -->
+    <div class="instructions-card">
+        <h2>📖 قواعد ومفاتيح اللعبة:</h2>
+        <ul>
+            <li><strong>مفتاح التشفير:</strong> الحروف الأبجدية مقسمة إلى 7 مجموعات مرقمة (1 إلى 7).</li>
+            <li><strong>طريقة الفك:</strong> يتم استبدال كل حرف بالرقم الخاص بجمجموعته.</li>
+            <li>علامة <strong>+</strong> تفصل بين حروف الكلمة الواحدة.</li>
+            <li>علامة <strong>/</strong> تفصل بين الكلمات المختلفة.</li>
+        </ul>
+        <div class="example-box">
+            💡 <strong>مثال:</strong> الكلمة <strong style="direction: ltr; display: inline-block;">CAT</strong> تتحول إلى <strong style="direction: ltr; display: inline-block;">1 + 1 + 5</strong><br>
+            (C تنتمي للمجموعة 1 ، A للمجموعة 1 ، T للمجموعة 5).
+        </div>
+    </div>
 
-    <!-- نجوم نجاح (ستظهر عند الإجابة الصحيحة) -->
+    <!-- مكان كونفيتي ونجوم -->
+    <div id="confetti" aria-hidden="true"></div>
     <div id="starsContainer" class="stars" aria-hidden="true">✨ ✨ ✨</div>
 
     <!-- لوحة المجموعات المرجعية -->
     <div class="reference-board" id="referenceBoard" aria-hidden="false">
-        <div class="group-card"><div class="group-num">1</div><div class="group-letters">A B C D</div></div>
-        <div class="group-card"><div class="group-num">2</div><div class="group-letters">E F G H</div></div>
-        <div class="group-card"><div class="group-num">3</div><div class="group-letters">I J K L</div></div>
-        <div class="group-card"><div class="group-num">4</div><div class="group-letters">M N O P</div></div>
-        <div class="group-card"><div class="group-num">5</div><div class="group-letters">Q R S T</div></div>
-        <div class="group-card"><div class="group-num">6</div><div class="group-letters">U V W X</div></div>
-        <div class="group-card"><div class="group-num">7</div><div class="group-letters">Y Z</div></div>
+        <div class="group-card"><div class="group-num">المجموعة 1</div><div class="group-letters">A B C D</div></div>
+        <div class="group-card"><div class="group-num">المجموعة 2</div><div class="group-letters">E F G H</div></div>
+        <div class="group-card"><div class="group-num">المجموعة 3</div><div class="group-letters">I J K L</div></div>
+        <div class="group-card"><div class="group-num">المجموعة 4</div><div class="group-letters">M N O P</div></div>
+        <div class="group-card"><div class="group-num">المجموعة 5</div><div class="group-letters">Q R S T</div></div>
+        <div class="group-card"><div class="group-num">المجموعة 6</div><div class="group-letters">U V W X</div></div>
+        <div class="group-card"><div class="group-num">المجموعة 7</div><div class="group-letters">Y Z</div></div>
     </div>
 
     <!-- اختيار المستوى -->
@@ -308,23 +381,28 @@
             <span>النقاط: <span id="score">0</span></span>
             <span id="levelLabel">المستوى: أطفال</span>
         </div>
-        <p id="gameTitle">خمن الكلمة المكتوبة بالشفرة:</p>
+        <p id="gameTitle">خمن الكلمة المكتوبة بالشفرة التالية:</p>
         <div class="cipher-display" id="cipherText" aria-live="polite">---</div>
-        <input type="text" id="userInput" placeholder="اكتب الكلمة هنا..." autocomplete="off" aria-label="إجابة اللاعب">
-        <button class="btn" onclick="checkAnswer()" id="checkBtn" aria-label="تحقق من الإجابة">تحقق من الإجابة</button>
+        <input type="text" id="userInput" placeholder="اكتب الكلمة الإنجليزية هنا..." autocomplete="off" aria-label="إجابة اللاعب">
+        
+        <div class="btn-group">
+            <button class="btn" onclick="checkAnswer()" id="checkBtn" aria-label="تحقق من الإجابة">تحقق</button>
+            <button class="btn btn-secondary" onclick="toggleHint()" aria-label="إظهار تلميح">تلميح 💡</button>
+        </div>
+        
+        <div class="hint-box" id="hintBox"></div>
         <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
     </div>
 
-    <!-- أداة تشفير اسم أو كلمة من اختياراتك -->
+    <!-- أداة التشفير التفاعلية -->
     <div class="encoder-section">
-        <h3>⚡ أداة التشفير السريع:</h3>
-        <input type="text" id="encoderInput" placeholder="اكتب أي اسم أو كلمة..." oninput="encodeCustomWord()" aria-label="أداة التشفير">
+        <h3>⚡ أداة التجربة (اكتب كلمة لتشفرها):</h3>
+        <input type="text" id="encoderInput" placeholder="اكتب أي اسم أو كلمة لترجمتها..." oninput="encodeCustomWord()" aria-label="أداة التشفير">
         <div class="encoded-result" id="encoderResult">---</div>
     </div>
 </div>
 
 <script>
-    // توزيع الحروف المرجعية
     const letterGroups = {
         'A':1, 'B':1, 'C':1, 'D':1,
         'E':2, 'F':2, 'G':2, 'H':2,
@@ -335,7 +413,6 @@
         'Y':7, 'Z':7
     };
 
-    // بنك الكلمات حسب المستويات
     const wordBank = {
         kids: ["CAT", "DOG", "BOY", "BED", "MAN", "PEN"],
         medium: ["LION", "MILK", "FISH", "HAND", "BOOK", "AHMED"],
@@ -347,7 +424,6 @@
     let currentCipher = '';
     let score = 0;
 
-    // دالة تحويل أي كلمة لشفرة رقمية
     function encodeWord(word) {
         if (!word) return '';
         const words = word.toUpperCase().split(/\s+/);
@@ -361,7 +437,6 @@
         return encodedWords.join(' / ');
     }
 
-    // إعداد جولة جديدة
     function nextRound() {
         const words = wordBank[currentLevel];
         currentWord = words[Math.floor(Math.random() * words.length)];
@@ -370,10 +445,22 @@
         document.getElementById('cipherText').innerText = currentCipher || '---';
         document.getElementById('userInput').value = '';
         document.getElementById('feedback').innerText = '';
+        document.getElementById('hintBox').style.display = 'none';
         document.getElementById('userInput').focus();
     }
 
-    // تفعيل كونفيتي: ينشئ قطعاً مؤقتة ويزيّلها بعد انتهاء الحركة
+    function toggleHint() {
+        const hintBox = document.getElementById('hintBox');
+        if (hintBox.style.display === 'block') {
+            hintBox.style.display = 'none';
+        } else {
+            const firstLetter = currentWord.charAt(0);
+            const groupNum = letterGroups[firstLetter];
+            hintBox.innerText = `تلميح: الحرف الأول ينتمي للمجموعة (${groupNum}) وطول الكلمة ${currentWord.length} أحرف.`;
+            hintBox.style.display = 'block';
+        }
+    }
+
     function triggerConfetti(count = 28) {
         const confettiRoot = document.getElementById('confetti');
         const colors = ['#f43f5e', '#fb923c', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6'];
@@ -382,50 +469,40 @@
         for (let i = 0; i < count; i++) {
             const el = document.createElement('div');
             el.className = 'confetti-piece';
-            const w = 8 + Math.random() * 8; // width
+            const w = 8 + Math.random() * 8;
             const h = 10 + Math.random() * 10;
             el.style.width = `${w}px`;
             el.style.height = `${h}px`;
             el.style.background = colors[Math.floor(Math.random() * colors.length)];
-            // random horizontal start within container
             const left = Math.random() * (width - 20);
             el.style.left = `${left}px`;
-            // random animation duration & delay
             const dur = 1200 + Math.random() * 900;
             const delay = Math.random() * 200;
             el.style.animationDuration = `${dur}ms, ${800 + Math.random() * 600}ms`;
             el.style.animationDelay = `${delay}ms, ${delay}ms`;
-            // slight rotation origin offset
             el.style.transform = `translateY(-10vh) rotate(${Math.random() * 360}deg)`;
             confettiRoot.appendChild(el);
 
-            // remove after animation
-            (function(node, duration) {
-                setTimeout(() => {
-                    if (node && node.parentNode) node.parentNode.removeChild(node);
-                }, duration + 600);
-            })(el, dur + delay);
+            setTimeout(() => {
+                if (el && el.parentNode) el.parentNode.removeChild(el);
+            }, dur + delay + 600);
         }
     }
 
-    // إظهار نجوم متوهجة قصيرة
     function showStars() {
         const stars = document.getElementById('starsContainer');
         stars.style.opacity = '0';
         stars.setAttribute('aria-hidden', 'false');
-        // re-trigger animation by cloning
         const clone = stars.cloneNode(true);
         stars.parentNode.replaceChild(clone, stars);
         clone.classList.add('stars');
         clone.setAttribute('aria-hidden', 'false');
-        // إخفاء بعد مدة
         setTimeout(() => {
             clone.setAttribute('aria-hidden', 'true');
             clone.style.opacity = '0';
         }, 900);
     }
 
-    // التحقق من إجابة اللاعب
     function checkAnswer() {
         const userAns = document.getElementById('userInput').value.trim().toUpperCase();
         const feedback = document.getElementById('feedback');
@@ -437,7 +514,6 @@
             feedback.innerText = '✨ إجابة صحيحة! أحسنت.';
             score += 10;
             document.getElementById('score').innerText = score;
-            // تأثيرات بصرية
             showStars();
             triggerConfetti(30);
             setTimeout(nextRound, 1200);
@@ -447,7 +523,6 @@
         }
     }
 
-    // تغيير المستوى — يستقبل العنصر الذي تم النقر عليه لإدارة فئة active بأمان
     function setLevel(level, btn) {
         currentLevel = level;
         document.querySelectorAll('.level-btn').forEach(b => {
@@ -462,7 +537,6 @@
         const labels = { kids: 'أطفال', medium: 'ناشئة', expert: 'محترفون' };
         document.getElementById('levelLabel').innerText = `المستوى: ${labels[level]}`;
 
-        // إخفاء اللوحة المرجعية في مستوى المحترفين للتحدي
         const board = document.getElementById('referenceBoard');
         if (level === 'expert') {
             board.style.opacity = '0.3';
@@ -475,7 +549,6 @@
         nextRound();
     }
 
-    // أداة التشفير التفاعلية أثناء الكتابة
     function encodeCustomWord() {
         const input = document.getElementById('encoderInput').value.trim();
         const resultDiv = document.getElementById('encoderResult');
@@ -486,7 +559,6 @@
         }
     }
 
-    // دعم مفتاح Enter لإرسال الإجابة
     document.getElementById('userInput').addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -494,7 +566,6 @@
         }
     });
 
-    // بدء اللعبة لأول مرة
     nextRound();
 </script>
 
