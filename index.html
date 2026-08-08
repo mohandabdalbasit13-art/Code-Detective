@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مُحقّق الشفرات - Code Detective</title>
+    <title>شفرة الكلمات - لعبة الحروف</title>
     <style>
         :root {
             --primary: #4f46e5;
@@ -32,16 +32,14 @@
 
         .app-container {
             width: 100%;
-            max-width: 520px;
+            max-width: 500px;
             background: var(--card-bg);
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             padding: 25px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            position: relative;
-            overflow: visible;
+            gap: 15px;
         }
 
         header {
@@ -52,23 +50,6 @@
             color: var(--primary);
             font-size: 1.8rem;
             margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .logo {
-            display: inline-block;
-            font-size: 1.6rem;
-            transform-origin: center;
-            animation: logo-bounce 2000ms ease-in-out infinite;
-        }
-        @keyframes logo-bounce {
-            0% { transform: translateY(0) rotate(0deg); }
-            45% { transform: translateY(-6px) rotate(-8deg); }
-            55% { transform: translateY(-4px) rotate(6deg); }
-            100% { transform: translateY(0) rotate(0deg); }
         }
 
         header p {
@@ -76,46 +57,10 @@
             color: #6b7280;
         }
 
-        /* قسم التعليمات والقواعد */
-        .instructions-card {
-            background: #fffbe0;
-            border: 1px solid #fde047;
-            border-radius: 12px;
-            padding: 15px;
-            font-size: 0.88rem;
-            line-height: 1.5;
-        }
-
-        .instructions-card h2 {
-            font-size: 1rem;
-            color: #b45309;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .instructions-card ul {
-            padding-right: 18px;
-            margin-bottom: 10px;
-        }
-
-        .instructions-card li {
-            margin-bottom: 4px;
-        }
-
-        .example-box {
-            background: #ffffff;
-            border-radius: 8px;
-            padding: 8px 12px;
-            border: 1px dashed #f59e0b;
-            font-size: 0.83rem;
-        }
-
         /* المجموعات المرجعية */
         .reference-board {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 8px;
             background: #eef2ff;
             padding: 12px;
@@ -125,7 +70,7 @@
 
         .group-card {
             background: white;
-            padding: 8px;
+            padding: 6px;
             border-radius: 8px;
             text-align: center;
             border: 1px solid #c7d2fe;
@@ -134,7 +79,7 @@
         .group-num {
             font-weight: bold;
             color: var(--primary);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .group-letters {
@@ -175,22 +120,34 @@
             border-radius: 15px;
             padding: 20px;
             text-align: center;
+            position: relative;
         }
 
         .score-board {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             font-weight: bold;
             color: var(--accent);
         }
 
-        .cipher-display {
-            font-size: 2rem;
+        .hint-badge {
+            background: #fef3c7;
+            color: #d97706;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-bottom: 5px;
             font-weight: bold;
-            letter-spacing: 3px;
+        }
+
+        .cipher-display {
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 2px;
             color: var(--primary);
-            margin: 15px 0;
+            margin: 10px 0;
             direction: ltr;
         }
 
@@ -211,14 +168,8 @@
             border-color: var(--primary);
         }
 
-        .btn-group {
-            display: flex;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
         .btn {
-            flex: 2;
+            width: 100%;
             padding: 12px;
             background: var(--primary);
             color: white;
@@ -227,6 +178,7 @@
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
+            margin-top: 10px;
             transition: 0.3s;
         }
 
@@ -234,29 +186,27 @@
             background: var(--primary-hover);
         }
 
-        .btn-secondary {
-            flex: 1;
-            background: #e5e7eb;
-            color: #374151;
-        }
-
-        .btn-secondary:hover {
-            background: #d1d5db;
+        .audio-btn {
+            background: #3b82f6;
+            margin-top: 5px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .feedback {
             margin-top: 10px;
             font-weight: bold;
-            min-height: 24px;
+            min-height: 28px;
+            font-size: 1rem;
         }
 
-        .hint-box {
-            margin-top: 8px;
-            font-size: 0.85rem;
-            color: #4b5563;
-            background: #f3f4f6;
-            padding: 6px;
-            border-radius: 6px;
+        .translation-box {
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-weight: bold;
+            margin-top: 5px;
             display: none;
         }
 
@@ -269,140 +219,78 @@
         }
 
         .encoder-section h3 {
-            font-size: 1rem;
-            margin-bottom: 10px;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
         }
 
         .encoded-result {
-            margin-top: 10px;
+            margin-top: 8px;
             font-weight: bold;
             color: var(--success);
             direction: ltr;
             text-align: center;
-            font-size: 1.2rem;
-        }
-
-        /* نجوم وكونفيتي */
-        .stars {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            top: 10%;
-            pointer-events: none;
-            display: flex;
-            gap: 6px;
-            z-index: 30;
-            font-size: 1.4rem;
-            opacity: 0;
-            animation: stars-pop 900ms ease-out forwards;
-        }
-        @keyframes stars-pop {
-            0% { transform: translateX(-50%) scale(0.2); opacity: 0; }
-            50% { transform: translateX(-50%) scale(1.1); opacity: 1; }
-            100% { transform: translateX(-50%) scale(1) opacity: 0; }
-        }
-
-        #confetti {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            overflow: visible;
-            z-index: 25;
-        }
-        .confetti-piece {
-            position: absolute;
-            width: 10px;
-            height: 14px;
-            opacity: 0.95;
-            transform-origin: center;
-            border-radius: 2px;
-            will-change: transform, top, left;
-            animation: confetti-fall linear forwards, confetti-tilt linear infinite;
-        }
-        @keyframes confetti-fall {
-            from { transform: translateY(-20vh) rotate(0deg); opacity: 1; }
-            to { transform: translateY(120vh) rotate(720deg); opacity: 0.95; }
-        }
-        @keyframes confetti-tilt {
-            0% { transform: rotate(0deg); }
-            50% { transform: rotate(180deg); }
-            100% { transform: rotate(360deg); }
+            font-size: 1.1rem;
         }
     </style>
 </head>
 <body>
 
-<div class="app-container" aria-live="polite">
+<div class="app-container">
     <header>
-        <h1><span class="logo" aria-hidden="true">🔍</span> Code Detective</h1>
-        <p>فك الشفرة، تعلم الحروف والكلمات الإنجليزية</p>
+        <h1>🔍 شفرة الكلمات</h1>
+        <p>Word Code: Alphabet Detective</p>
     </header>
 
-    <!-- دليل القواعد والتعليمات -->
-    <div class="instructions-card">
-        <h2>📖 قواعد ومفاتيح اللعبة:</h2>
-        <ul>
-            <li><strong>مفتاح التشفير:</strong> الحروف الأبجدية مقسمة إلى 7 مجموعات مرقمة (1 إلى 7).</li>
-            <li><strong>طريقة الفك:</strong> يتم استبدال كل حرف بالرقم الخاص بجمجموعته.</li>
-            <li>علامة <strong>+</strong> تفصل بين حروف الكلمة الواحدة.</li>
-            <li>علامة <strong>/</strong> تفصل بين الكلمات المختلفة.</li>
-        </ul>
-        <div class="example-box">
-            💡 <strong>مثال:</strong> الكلمة <strong style="direction: ltr; display: inline-block;">CAT</strong> تتحول إلى <strong style="direction: ltr; display: inline-block;">1 + 1 + 5</strong><br>
-            (C تنتمي للمجموعة 1 ، A للمجموعة 1 ، T للمجموعة 5).
-        </div>
-    </div>
-
-    <!-- مكان كونفيتي ونجوم -->
-    <div id="confetti" aria-hidden="true"></div>
-    <div id="starsContainer" class="stars" aria-hidden="true">✨ ✨ ✨</div>
-
     <!-- لوحة المجموعات المرجعية -->
-    <div class="reference-board" id="referenceBoard" aria-hidden="false">
-        <div class="group-card"><div class="group-num">المجموعة 1</div><div class="group-letters">A B C D</div></div>
-        <div class="group-card"><div class="group-num">المجموعة 2</div><div class="group-letters">E F G H</div></div>
-        <div class="group-card"><div class="group-num">المجموعة 3</div><div class="group-letters">I J K L</div></div>
-        <div class="group-card"><div class="group-num">المجموعة 4</div><div class="group-letters">M N O P</div></div>
-        <div class="group-card"><div class="group-num">المجموعة 5</div><div class="group-letters">Q R S T</div></div>
-        <div class="group-card"><div class="group-num">المجموعة 6</div><div class="group-letters">U V W X</div></div>
-        <div class="group-card"><div class="group-num">المجموعة 7</div><div class="group-letters">Y Z</div></div>
+    <div class="reference-board" id="referenceBoard">
+        <div class="group-card"><div class="group-num">1</div><div class="group-letters">A B C D</div></div>
+        <div class="group-card"><div class="group-num">2</div><div class="group-letters">E F G H</div></div>
+        <div class="group-card"><div class="group-num">3</div><div class="group-letters">I J K L</div></div>
+        <div class="group-card"><div class="group-num">4</div><div class="group-letters">M N O P</div></div>
+        <div class="group-card"><div class="group-num">5</div><div class="group-letters">Q R S T</div></div>
+        <div class="group-card"><div class="group-num">6</div><div class="group-letters">U V W X</div></div>
+        <div class="group-card"><div class="group-num">7</div><div class="group-letters">Y Z</div></div>
     </div>
 
     <!-- اختيار المستوى -->
-    <div class="level-selector" role="tablist" aria-label="اختيار المستوى">
-        <button class="level-btn active" onclick="setLevel('kids', this)" aria-pressed="true">أطفال 👶</button>
-        <button class="level-btn" onclick="setLevel('medium', this)" aria-pressed="false">ناشئة 👦</button>
-        <button class="level-btn" onclick="setLevel('expert', this)" aria-pressed="false">محترفون 🧠</button>
+    <div class="level-selector">
+        <button class="level-btn active" onclick="setLevel('kids')">أطفال 👶</button>
+        <button class="level-btn" onclick="setLevel('medium')">ناشئة 👦</button>
+        <button class="level-btn" onclick="setLevel('expert')">محترفون 🧠</button>
     </div>
 
-    <!-- منطقة اللعب -->
-    <div class="game-card" role="application" aria-labelledby="gameTitle">
+    <!-- منطقة اللعبة -->
+    <div class="game-card">
         <div class="score-board">
             <span>النقاط: <span id="score">0</span></span>
             <span id="levelLabel">المستوى: أطفال</span>
         </div>
-        <p id="gameTitle">خمن الكلمة المكتوبة بالشفرة التالية:</p>
-        <div class="cipher-display" id="cipherText" aria-live="polite">---</div>
-        <input type="text" id="userInput" placeholder="اكتب الكلمة الإنجليزية هنا..." autocomplete="off" aria-label="إجابة اللاعب">
         
-        <div class="btn-group">
-            <button class="btn" onclick="checkAnswer()" id="checkBtn" aria-label="تحقق من الإجابة">تحقق</button>
-            <button class="btn btn-secondary" onclick="toggleHint()" aria-label="إظهار تلميح">تلميح 💡</button>
-        </div>
+        <!-- تلميح عدد الأحرف -->
+        <div class="hint-badge" id="letterCountHint">الكلمة تتكون من: 3 أحرف</div>
+
+        <div class="cipher-display" id="cipherText">4+1+4</div>
+        <input type="text" id="userInput" placeholder="اكتب الكلمة بالإنجليزية..." autocomplete="off">
+        <button class="btn" onclick="checkAnswer()">تحقق من الإجابة</button>
         
-        <div class="hint-box" id="hintBox"></div>
-        <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+        <button class="btn audio-btn" id="listenBtn" onclick="speakWord(currentWord)">
+            🔊 استمع للطق النطق الصحيح
+        </button>
+
+        <div class="feedback" id="feedback"></div>
+        <div class="translation-box" id="translationBox"></div>
     </div>
 
-    <!-- أداة التشفير التفاعلية -->
+    <!-- أداة تشفير سريعة -->
     <div class="encoder-section">
-        <h3>⚡ أداة التجربة (اكتب كلمة لتشفرها):</h3>
-        <input type="text" id="encoderInput" placeholder="اكتب أي اسم أو كلمة لترجمتها..." oninput="encodeCustomWord()" aria-label="أداة التشفير">
+        <h3>⚡ أداة تشفير وتجربة أي كلمة:</h3>
+        <input type="text" id="encoderInput" placeholder="اكتب كلمة للتشفير..." oninput="encodeCustomWord()">
         <div class="encoded-result" id="encoderResult">---</div>
     </div>
 </div>
 
 <script>
+    // توزيع الحروف المرجعية
     const letterGroups = {
         'A':1, 'B':1, 'C':1, 'D':1,
         'E':2, 'F':2, 'G':2, 'H':2,
@@ -413,126 +301,129 @@
         'Y':7, 'Z':7
     };
 
+    // بنك كلمات متكامل يضم أكثر من 120 كلمة مقسمة حسب المستويات مع ترجمتها العربية
     const wordBank = {
-        kids: ["CAT", "DOG", "BOY", "BED", "MAN", "PEN"],
-        medium: ["LION", "MILK", "FISH", "HAND", "BOOK", "AHMED"],
-        expert: ["FATHER", "SCHOOL", "PYTHON", "DRAGON", "MOHAMMED"]
+        kids: [
+            { word: "CAT", ar: "قطة" }, { word: "DOG", ar: "كلب" }, { word: "BOY", ar: "ولد" },
+            { word: "BED", ar: "سرير" }, { word: "MAN", ar: "رجل" }, { word: "PEN", ar: "قلم" },
+            { word: "SUN", ar: "شمس" }, { word: "CUP", ar: "كوب" }, { word: "BOX", ar: "صندوق" },
+            { word: "CAR", ar: "سيارة" }, { word: "HAT", ar: "قبعة" }, { word: "EGG", ar: "بيضة" },
+            { word: "FAN", ar: "مروحة" }, { word: "BUS", ar: "حافلة" }, { word: "BAG", ar: "حقيبة" },
+            { word: "KEY", ar: "مفتاح" }, { word: "MAP", ar: "خريطة" }, { word: "ARM", ar: "ذراع" },
+            { word: "PIG", ar: "خنزير" }, { word: "FOX", ar: "ثعلب" }, { word: "RUN", ar: "يجري" },
+            { word: "RED", ar: "أحمر" }, { word: "ONE", ar: "واحد" }, { word: "TWO", ar: "اثنان" },
+            { word: "DAY", ar: "يوم" }, { word: "SKY", ar: "سماء" }, { word: "BAT", ar: "خفاش" },
+            { word: "ANT", ar: "نملة" }, { word: "BEE", ar: "نحلة" }, { word: "COW", ar: "بقرة" },
+            { word: "ICE", ar: "ثلج" }, { word: "SEA", ar: "بحر" }, { word: "TOY", ar: "لعبة" },
+            { word: "EYE", ar: "عين" }, { word: "JAM", ar: "مربى" }, { word: "LIP", ar: "شفة" },
+            { word: "NUT", ar: "مكسرات" }, { word: "PIN", ar: "دبوس" }, { word: "TOP", ar: "قمة" },
+            { word: "ZOO", ar: "حديقة حيوان" }
+        ],
+        medium: [
+            { word: "LION", ar: "أسد" }, { word: "MILK", ar: "حليب" }, { word: "FISH", ar: "سمكة" },
+            { word: "HAND", ar: "يد" }, { word: "BOOK", ar: "كتاب" }, { word: "DOOR", ar: "باب" },
+            { word: "MOON", ar: "قمر" }, { word: "STAR", ar: "نجمة" }, { word: "TREE", ar: "شجرة" },
+            { word: "BIRD", ar: "طائر" }, { word: "GAME", ar: "لعبة" }, { word: "FOOD", ar: "طعام" },
+            { word: "DESK", ar: "مكتب" }, { word: "KING", ar: "ملك" }, { word: "PARK", ar: "حديقة" },
+            { word: "SHIP", ar: "سفينة" }, { word: "RING", ar: "خاتم" }, { word: "BALL", ar: "كرة" },
+            { word: "CAKE", ar: "كعكة" }, { word: "FIRE", ar: "نار" }, { word: "HOME", ar: "منزل" },
+            { word: "LAMP", ar: "مصباح" }, { word: "RAIN", ar: "مطر" }, { word: "SNOW", ar: "ثلج" },
+            { word: "WIND", ar: "ريح" }, { word: "BABY", ar: "رضيع" }, { word: "CITY", ar: "مدينة" },
+            { word: "DUCK", ar: "بطة" }, { word: "FROG", ar: "ضفدع" }, { word: "GOLD", ar: "ذهب" },
+            { word: "LEAF", ar: "ورقة شجر" }, { word: "MOOD", ar: "مزاج" }, { word: "NAME", ar: "اسم" },
+            { word: "ROAD", ar: "طريق" }, { word: "TIME", ar: "وقت" }, { word: "WAVE", ar: "موجة" },
+            { word: "WORK", ar: "عمل" }, { word: "ZOOM", ar: "تكبير" }, { word: "BLUE", ar: "أزرق" },
+            { word: "PINK", ar: "وردي" }
+        ],
+        expert: [
+            { word: "FATHER", ar: "أب" }, { word: "MOTHER", ar: "أم" }, { word: "SCHOOL", ar: "مدرسة" },
+            { word: "PYTHON", ar: "بايثون" }, { word: "DRAGON", ar: "تنين" }, { word: "SUMMER", ar: "صيف" },
+            { word: "WINTER", ar: "شتاء" }, { word: "ANIMAL", ar: "حيوان" }, { word: "DOCTOR", ar: "طبيب" },
+            { word: "YELLOW", ar: "أصفر" }, { word: "ORANGE", ar: "برتقالي" }, { word: "FLOWER", ar: "زهرة" },
+            { word: "GARDEN", ar: "حديقة" }, { word: "PLANET", ar: "كوكب" }, { word: "SILVER", ar: "فضة" },
+            { word: "ROCKET", ar: "صاروخ" }, { word: "CAMERA", ar: "كاميرا" }, { word: "WINDOW", ar: "نافذة" },
+            { word: "PENCIL", ar: "قلم رصاص" }, { word: "BANANA", ar: "موز" }, { word: "BOTTLE", ar: "زجاجة" },
+            { word: "BRIDGE", ar: "جسر" }, { word: "CASTLE", ar: "قلعة" }, { word: "CIRCLE", ar: "دائرة" },
+            { word: "DANGER", ar: "خطر" }, { word: "ENERGY", ar: "طاقة" }, { word: "FOREST", ar: "غابة" },
+            { word: "FUTURE", ar: "مستقبل" }, { word: "ISLAND", ar: "جزيرة" }, { word: "MARKET", ar: "سوق" },
+            { word: "MEMORY", ar: "ذاكرة" }, { word: "NUMBER", ar: "رقم" }, { word: "PERSON", ar: "شخص" }, { word: "RIVER", ar: "نهر" }, { word: "SYSTEM", ar: "نظام" }, { word: "TRAVEL", ar: "سفر" }, { word: "VALLEY", ar: "وادي" }, { word: "WONDER", ar: "عجب" }, { word: "MOHAMMED", ar: "محمد" }, { word: "AHMED", ar: "أحمد" }
+        ]
     };
 
     let currentLevel = 'kids';
+    let currentWordObj = {};
     let currentWord = '';
     let currentCipher = '';
     let score = 0;
 
+    // دالة التشفير الرقمي
     function encodeWord(word) {
-        if (!word) return '';
-        const words = word.toUpperCase().split(/\s+/);
-        const encodedWords = words.map(w => {
-            const letters = w.split('').map(char => {
-                if (letterGroups[char]) return letterGroups[char];
-                return '?';
-            });
-            return letters.join(' + ');
-        });
-        return encodedWords.join(' / ');
+        return word.toUpperCase().split('').map(char => letterGroups[char] || '?').join(' + ');
     }
 
+    // إعداد جولة جديدة
     function nextRound() {
-        const words = wordBank[currentLevel];
-        currentWord = words[Math.floor(Math.random() * words.length)];
+        const bank = wordBank[currentLevel];
+        currentWordObj = bank[Math.floor(Math.random() * bank.length)];
+        currentWord = currentWordObj.word;
         currentCipher = encodeWord(currentWord);
-
-        document.getElementById('cipherText').innerText = currentCipher || '---';
+        
+        document.getElementById('cipherText').innerText = currentCipher;
         document.getElementById('userInput').value = '';
         document.getElementById('feedback').innerText = '';
-        document.getElementById('hintBox').style.display = 'none';
-        document.getElementById('userInput').focus();
+        document.getElementById('translationBox').style.display = 'none';
+        document.getElementById('listenBtn').style.display = 'none';
+
+        // إظهار تلميح عدد الأحرف
+        const len = currentWord.length;
+        document.getElementById('letterCountHint').innerText = `الكلمة تتكون من: ${len} أحرف`;
     }
 
-    function toggleHint() {
-        const hintBox = document.getElementById('hintBox');
-        if (hintBox.style.display === 'block') {
-            hintBox.style.display = 'none';
-        } else {
-            const firstLetter = currentWord.charAt(0);
-            const groupNum = letterGroups[firstLetter];
-            hintBox.innerText = `تلميح: الحرف الأول ينتمي للمجموعة (${groupNum}) وطول الكلمة ${currentWord.length} أحرف.`;
-            hintBox.style.display = 'block';
+    // نطق الكلمة بالإنجليزية باستخدام Web Speech API
+    function speakWord(text) {
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.85; // سرعة متوسطة وواضحة
+            window.speechSynthesis.speak(utterance);
         }
     }
 
-    function triggerConfetti(count = 28) {
-        const confettiRoot = document.getElementById('confetti');
-        const colors = ['#f43f5e', '#fb923c', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6'];
-        const width = document.querySelector('.app-container').clientWidth;
-
-        for (let i = 0; i < count; i++) {
-            const el = document.createElement('div');
-            el.className = 'confetti-piece';
-            const w = 8 + Math.random() * 8;
-            const h = 10 + Math.random() * 10;
-            el.style.width = `${w}px`;
-            el.style.height = `${h}px`;
-            el.style.background = colors[Math.floor(Math.random() * colors.length)];
-            const left = Math.random() * (width - 20);
-            el.style.left = `${left}px`;
-            const dur = 1200 + Math.random() * 900;
-            const delay = Math.random() * 200;
-            el.style.animationDuration = `${dur}ms, ${800 + Math.random() * 600}ms`;
-            el.style.animationDelay = `${delay}ms, ${delay}ms`;
-            el.style.transform = `translateY(-10vh) rotate(${Math.random() * 360}deg)`;
-            confettiRoot.appendChild(el);
-
-            setTimeout(() => {
-                if (el && el.parentNode) el.parentNode.removeChild(el);
-            }, dur + delay + 600);
-        }
-    }
-
-    function showStars() {
-        const stars = document.getElementById('starsContainer');
-        stars.style.opacity = '0';
-        stars.setAttribute('aria-hidden', 'false');
-        const clone = stars.cloneNode(true);
-        stars.parentNode.replaceChild(clone, stars);
-        clone.classList.add('stars');
-        clone.setAttribute('aria-hidden', 'false');
-        setTimeout(() => {
-            clone.setAttribute('aria-hidden', 'true');
-            clone.style.opacity = '0';
-        }, 900);
-    }
-
+    // التحقق من الإجابة
     function checkAnswer() {
         const userAns = document.getElementById('userInput').value.trim().toUpperCase();
         const feedback = document.getElementById('feedback');
+        const translationBox = document.getElementById('translationBox');
+        const listenBtn = document.getElementById('listenBtn');
 
         if (!userAns) return;
 
         if (userAns === currentWord || encodeWord(userAns) === currentCipher) {
             feedback.style.color = 'var(--success)';
-            feedback.innerText = '✨ إجابة صحيحة! أحسنت.';
+            feedback.innerText = `✨ إجابة صحيحة! (${currentWord})`;
+            
+            // إظهار الترجمة والنطق
+            translationBox.innerText = `الترجمة: ${currentWordObj.ar}`;
+            translationBox.style.display = 'block';
+            listenBtn.style.display = 'flex';
+
+            // نطق الكلمة تلقائياً عند الإجابة الصحيحة
+            speakWord(currentWord);
+
             score += 10;
             document.getElementById('score').innerText = score;
-            showStars();
-            triggerConfetti(30);
-            setTimeout(nextRound, 1200);
+            setTimeout(nextRound, 3000); // إعطاء 3 ثوان لسماع النطق وقراءة الترجمة
         } else {
             feedback.style.color = '#ef4444';
-            feedback.innerText = '❌ إجابة خاطئة، حاول مرة أخرى!';
+            feedback.innerText = '❌ إجابة خاطئة، تأكد من عدد الأحرف ومجموعات الحروف!';
         }
     }
 
-    function setLevel(level, btn) {
+    // تغيير المستوى
+    function setLevel(level) {
         currentLevel = level;
-        document.querySelectorAll('.level-btn').forEach(b => {
-            b.classList.remove('active');
-            b.setAttribute('aria-pressed', 'false');
-        });
-        if (btn && btn.classList) {
-            btn.classList.add('active');
-            btn.setAttribute('aria-pressed', 'true');
-        }
+        document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
 
         const labels = { kids: 'أطفال', medium: 'ناشئة', expert: 'محترفون' };
         document.getElementById('levelLabel').innerText = `المستوى: ${labels[level]}`;
@@ -540,15 +431,14 @@
         const board = document.getElementById('referenceBoard');
         if (level === 'expert') {
             board.style.opacity = '0.3';
-            board.setAttribute('aria-hidden', 'true');
         } else {
             board.style.opacity = '1';
-            board.setAttribute('aria-hidden', 'false');
         }
 
         nextRound();
     }
 
+    // أداة التشفير أثناء الكتابة
     function encodeCustomWord() {
         const input = document.getElementById('encoderInput').value.trim();
         const resultDiv = document.getElementById('encoderResult');
@@ -559,13 +449,7 @@
         }
     }
 
-    document.getElementById('userInput').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            checkAnswer();
-        }
-    });
-
+    // تشغيل الجولة الأولى
     nextRound();
 </script>
 
